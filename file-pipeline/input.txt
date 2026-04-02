@@ -1,0 +1,17 @@
+THIS LINE HAS FULL CAPS 
+this is a lowercase line
+this line has leading and trailing spaces
+----------------------------------
+another lowercase line
+ANOTHER ALL CAPS LINE
+line with REVERSE keyword 
+this line contains reverse word
+----------------------------------
+short
+this is not a very not very very very very very very very very very very very very very long line that should be flagged because it exceeds eighty characters
+REVERSE SHOULD TRIGGER HERE
+lowercase with reverse keyword
+----------------------------------
+final lowercase line
+FINAL ALL CAPS LINE
+spaced ALL  CAPS   LINE
