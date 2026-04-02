@@ -46,19 +46,34 @@ import (
 )
 
 func capsToTitle(text string) string {
-	if text == strings.ToUpper(text) {
+	if text == strings.ToUpper(text) && text != "" {
 		return strings.Title(strings.ToLower(text))
 	}
 	return text
 }
 func lowerToUpper(text string) string {
-	if text == strings.ToLower(text) {
+	if text == strings.ToLower(text) && text != "" {
 		return strings.ToUpper(text)
 	}
 	return text
 }
 func trimSpaces(text string) string {
 	return strings.Join(strings.Fields(text), " ")
+}
+func removeDashesAndBlanks(text string) bool {
+	if text == "" {
+		return true
+	}
+	cleaned := strings.TrimSpace(text)
+	if cleaned == "" {
+		return true
+	}
+	for _, r := range cleaned {
+		if r != '-' {
+			return false
+		}
+	}
+	return true
 }
 func reverseS(text string) string {
 	if strings.Contains(text, "REVERSE") {
@@ -70,10 +85,42 @@ func reverseS(text string) string {
 	}
 	return text
 }
-func ProcessText(text string) string {
-	text = reverseS(text)
-	return text
+func ProcessText(content string) (string, int, int, int) {
+	line := strings.Split(content, "\n")
+	var cleaned []string
+	linesRead := 0
+	linesRemoved := 0
+	for _, lines := range line {
+		linesRead++
+
+		lines = capsToTitle(lines)
+		lines = lowerToUpper(lines)
+		lines = trimSpaces(lines)
+		lines = reverseS(lines)
+
+		if removeDashesAndBlanks(lines) {
+			linesRemoved++
+			continue
+		}
+		cleaned = append(cleaned, lines)
+	}
+
+	var output strings.Builder
+	output.WriteString("==== THE INTERFACE FILE-PIPELINE OUTPUR ====\n\n")
+	for i, line := range cleaned {
+		output.WriteString(fmt.Sprintf("%d. %s\n", i+1, line))
+	}
+	output.WriteString("\n")
+	output.WriteString("===============================================\n")
+	output.WriteString(fmt.Sprintf("lines read : %d\n", linesRead))
+	output.WriteString(fmt.Sprintf("Lines Written : %d\n", len(cleaned)))
+	output.WriteString(fmt.Sprintf("Lines Removed : %d\n", linesRemoved))
+	output.WriteString("Rules Applied : 1.capsToTitle, 2.lowerToUpper, 3.trimSpaces, 4.reverseS, 5.removeDashesAndBlanks")
+	output.WriteString("================================================\n")
+
+	return output.String(), linesRead, len(cleaned), linesRemoved
 }
+
 func main() {
 	if len(os.Args) != 3 {
 		fmt.Println("Usage: go run . <inputfile> <outputfile>")
