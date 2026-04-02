@@ -46,7 +46,19 @@ import (
 )
 
 func capsToTitle(text string) string {
-
+	if text == strings.ToUpper(text) {
+		return strings.Title(strings.ToLower(text))
+	}
+	return text
+}
+func lowerToUpper(text string) string {
+	if text == strings.ToLower(text) {
+		return strings.ToUpper(text)
+	}
+	return text
+}
+func trimSpaces(text string) string {
+	return strings.Join(strings.Fields(text), " ")
 }
 func reverseS(text string) string {
 	if strings.Contains(text, "REVERSE") {
@@ -58,7 +70,10 @@ func reverseS(text string) string {
 	}
 	return text
 }
-
+func ProcessText(text string) string {
+	text = reverseS(text)
+	return text
+}
 func main() {
 	if len(os.Args) != 3 {
 		fmt.Println("Usage: go run . <inputfile> <outputfile>")
@@ -67,6 +82,7 @@ func main() {
 
 	inputFile := os.Args[1]
 	outputFile := os.Args[2]
+
 	content, err := os.ReadFile(inputFile)
 	if err != nil {
 		fmt.Printf("Error reading input file: %v\n", err)
