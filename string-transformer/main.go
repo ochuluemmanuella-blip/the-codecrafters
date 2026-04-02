@@ -1,31 +1,35 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"os"
 	"strings"
 	"unicode"
 )
 
 func main() {
 	fmt.Println("****SENTINEL STRING TRANSFORMER--- ONLINE***")
+	fmt.Println("Commands: upper, lower, cap, title, snake, reverse, exit")
 	fmt.Println("Type 'exit' to quit")
-	for {
-		var input string
+	fmt.Print("> ")
+	scanner := bufio.NewScanner(os.Stdin)
+	for scanner.Scan() {
 		fmt.Print("> ")
-		_, err := fmt.Scanln(&input)
-		if err != nil {
-			continue
-		}
-		input = strings.TrimSpace(input)
+		input := strings.TrimSpace(scanner.Text())
 		if input == "" {
 			continue
+		}
+		if input == "exit" {
+			fmt.Println("shutting down transformer....")
+			return
 		}
 
 		parts := strings.Fields(input)
 		command := strings.ToLower(parts[0])
 		text := ""
 		if len(parts) > 1 {
-			text = strings.Join(parts[:1], " ")
+			text = strings.Join(parts[1:], " ")
 		}
 		if text == "" && command != "exit" {
 			fmt.Printf("No text provided. format: %s <text>", command)
@@ -92,7 +96,7 @@ func articlesT(s string) string {
 func underScore(s string) string {
 	runes := []rune(s)
 	for i := 0; i < len(runes); i++ {
-		if !unicode.IsDigit(runes[i]) && !unicode.IsLetter(runes[i]) && runes[i] == ' ' {
+		if !unicode.IsDigit(runes[i]) && !unicode.IsLetter(runes[i]) && runes[i] != ' ' {
 
 			run := string(runes[:i]) + string(runes[i+1:])
 
