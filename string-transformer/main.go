@@ -1,3 +1,8 @@
+// CodeCrafters — Operation Gopher Protocol
+// Module: String Transformer
+// Author: Ochulu Agbenu Emmanuella
+// Squad:  INTERFACE
+
 package main
 
 import (
@@ -21,7 +26,7 @@ func main() {
 			continue
 		}
 		if input == "exit" {
-			fmt.Println("shutting down transformer....")
+			fmt.Println("shutting down transformer....Goodbye!")
 			return
 		}
 
@@ -50,7 +55,7 @@ func main() {
 		case "reverse":
 			fmt.Println(reverseS(text))
 		case "exit":
-			fmt.Println("shutting down transformer....")
+			fmt.Println("shutting down transformer....Goodbye!")
 			return
 		default:
 			fmt.Printf("Unknown Command: \"%s\"\n", command)
