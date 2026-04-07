@@ -26,10 +26,10 @@
 //   Summary block: yes (in output file)
 //
 // Terminal summary fields:
-//   ✦ Lines read    : [number]
-//   ✦ Lines written : [number]
-//   ✦ Lines removed : [number]
-//   ✦ Rules applied : [list your 5 rules]
+//   > Lines read    : [number]
+//   > Lines written : [number]
+//   > Lines removed : [number]
+//   > Rules applied : [list your 5 rules]
 // ═══════════════════════════════════════════
 
 package main
@@ -43,7 +43,11 @@ import (
 
 func capsToTitle(line string) string {
 	if line == strings.ToUpper(line) && line != "" {
-		return strings.Title(strings.ToLower(line))
+		words := strings.Fields(strings.ToLower(line))
+		for i, w := range words {
+			words[i] = strings.ToUpper(string(w[0])) + w[1:]
+		}
+		return strings.Join(words, " ")
 	}
 	return line
 }
@@ -61,20 +65,22 @@ func trimWhitespace(line string) string {
 
 func reverseIfNeeded(line string) string {
 	if !strings.Contains(line, "REVERSE") {
-		return line
+
+		words := strings.Fields(line)
+		for i, j := 0, len(words)-1; i < j; i, j = i+1, j-1 {
+			words[i], words[j] = words[j], words[i]
+		}
+		return strings.Join(words, " ")
 	}
-	words := strings.Fields(line)
-	for i, j := 0, len(words)-1; i < j; i, j = i+1, j-1 {
-		words[i], words[j] = words[j], words[i]
-	}
-	return strings.Join(words, " ")
+	return line
 }
 
 func isOnlyDashesOrBlank(line string) bool {
-	if line == "" {
+	trimmed := strings.TrimSpace(line)
+	if trimmed == "" {
 		return true
 	}
-	for _, r := range line {
+	for _, r := range trimmed {
 		if r != '-' {
 			return false
 		}
@@ -124,10 +130,10 @@ func main() {
 
 		line := originalLine
 
-		line = capsToTitle(line)
-		line = lowerToUpper(line)
 		line = trimWhitespace(line)
 		line = reverseIfNeeded(line)
+		line = capsToTitle(line)
+		line = lowerToUpper(line)
 
 		if isOnlyDashesOrBlank(line) {
 			linesRemoved++
@@ -142,7 +148,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	writer.WriteString("SENTINEL FIELD REPORT — PROCESSED\n\n")
+	writer.WriteString("SENTINEL INTERFACE REPORT\n\n")
 
 	for i, line := range processedLines {
 		writer.WriteString(fmt.Sprintf("%d. %s\n", i+1, line))
@@ -155,13 +161,13 @@ func main() {
 	writer.WriteString("Rules applied : 1.capsToTitle, 2.lowerToUpper, 3.trimWhitespace, 4.reverseIfNeeded, 5.removeDashesOrBlanks\n")
 	writer.WriteString("===============================================\n")
 
-	fmt.Println("✦ Lines read    :", linesRead)
-	fmt.Println("✦ Lines written :", len(processedLines))
-	fmt.Println("✦ Lines removed :", linesRemoved)
-	fmt.Println("✦ Rules applied : Convert ALL CAPS to Title Case, Convert lowercase to uppercase, Trim whitespace, Reverse words containing REVERSE, Remove dashes/blanks")
+	fmt.Println("> Lines read    :", linesRead)
+	fmt.Println("> Lines written :", len(processedLines))
+	fmt.Println("> Lines removed :", linesRemoved)
+	fmt.Println("> Rules applied : Convert ALL CAPS to Title Case, Convert lowercase to uppercase, Trim whitespace, Reverse words containing REVERSE, Remove dashes/blanks")
 
 	if linesRead == 0 {
-		fmt.Println("⚠ Input file is empty. Nothing to process.")
+		fmt.Println("Input file is empty. Nothing to process.")
 	}
 
 	fmt.Printf("\nProcessing completed successfully!\nOutput written to: %s\n", outputFile)

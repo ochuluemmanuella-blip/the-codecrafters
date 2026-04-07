@@ -1,0 +1,23 @@
+SENTINEL INTERFACE REPORT
+
+1. Caps Full Has Line This
+2. LINE LOWERCASE A IS THIS
+3. SPACES TRAILING AND LEADING HAS LINE THIS
+4. LINE LOWERCASE ANOTHER
+5. Line Caps All Another
+6. line with REVERSE keyword
+7. THIS LINE CONTAINS REVERSE WORD
+8. SHORT
+9. CHARACTERS EIGHTY EXCEEDS IT BECAUSE FLAGGED BE SHOULD THAT LINE LONG VERY VERY VERY VERY VERY VERY VERY VERY VERY VERY VERY VERY VERY NOT VERY A NOT IS THIS
+10. Here Trigger Should Reverse
+11. LOWERCASE WITH REVERSE KEYWORD
+12. LINE LOWERCASE FINAL
+13. Line Caps All Final
+14. LINE CAPS ALL spaced
+
+===============================================
+Lines read    : 17
+Lines written : 14
+Lines removed : 3
+Rules applied : 1.capsToTitle, 2.lowerToUpper, 3.trimWhitespace, 4.reverseIfNeeded, 5.removeDashesOrBlanks
+===============================================
